@@ -61,6 +61,8 @@ module.exports.Schema = Joi.object({
     .valid(...flags)
     .required(),
   twitter: Joi.string().pattern(new RegExp(/^@?(\w){1,15}$/)),
+  mastodon: Joi.string().pattern(new RegExp(/^@(\w){1,30}@(\w)+\.(.?\w)+$/)),
+  bluesky: Joi.string().pattern(new RegExp(/^[\w-]+\.(?:[\w-]+\.)?[\w-]+$/)),
   emoji: Joi.string().allow(''),
   computer: Joi.string().valid('apple', 'windows', 'linux', 'bsd'),
   phone: Joi.string().valid('iphone', 'android', 'windowsphone', 'flipphone'),
@@ -77,8 +79,18 @@ module.exports.getStatusCode = function (url) {
       new Error('Request timed out')
     );
 
+    // Some hosts (Cloudflare, Caddy, etc.) block requests that don't send a
+    // browser-like User-Agent, returning a 403 even though the page is live.
+    // Send one so we don't produce false-positive failures for those sites.
+    const requestOptions = {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (compatible; awesome-uses-link-checker/1.0; +https://github.com/wesbos/awesome-uses)',
+      },
+    };
+
     client
-      .get(url, (res) => {
+      .get(url, requestOptions, (res) => {
         clearTimeout(timeoutId);
         resolve(res.statusCode);
       })
@@ -118,15 +130,14 @@ module.exports.communicateValidationOutcome = async function (
       'Cannot add a comment if GITHUB_TOKEN or context.payload.pull_request is not set'
     );
     core.info(`Comment contents:\n${comment}`);
-    return;
   }
+  // TODO: Re-enable a way to comment on PRs that tests passed.
+  // const pullRequestNumber = context.payload.pull_request.number;
 
-  const pullRequestNumber = context.payload.pull_request.number;
-
-  const octokit = new github.GitHub(GITHUB_TOKEN);
-  await octokit.issues.createComment({
-    ...context.repo,
-    issue_number: pullRequestNumber,
-    body: comment,
-  });
+  // const octokit = new github.getOctokit(GITHUB_TOKEN);
+  // await octokit.rest.pulls.createReviewComment({
+  //   ...context.repo,
+  //   pullRequestNumber,
+  //   body: comment,
+  // });
 };
