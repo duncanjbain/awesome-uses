@@ -387,6 +387,7 @@ This readme is auto-generated from the data.js file, so please don't PR this fil
 * [François Vantomme](https://code.strigo.cc/uses/) — Software craftsman
 * [Gabriele Girelli](https://ggirelli.info/uses) — Sr. Bioinformagician
 * [Mads Hartmann](https://www.mads-hartmann.com/uses) — Product Engineer located in Denmark currently working at Ona
+* [Axel Martínez](https://ackzell.dev/uses) — Mexican software engineer focused on the frontend and JS/TS (Vue, if you give me a choice). Eternal apprentice of web technologies.
 * [Camille Hodoul](https://camillehdl.dev/uses/) — Remote fullstack developer, mostly Javascript & PHP
 * [Diogo Ferreira](https://diogoferreira.pt/uses) — Linux System Administrator and DevOps aficionado. Sometimes I write on the internet.
 * [Afaq Rashid](https://www.afaqrashid.com/uses) — Full-stack developer building for the web with Next.js, React and TypeScript.
